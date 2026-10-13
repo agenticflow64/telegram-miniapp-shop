@@ -1,0 +1,118 @@
+.card {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.3s;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	&:hover {
+		transform: translateY(-4px);
+	}
+}
+
+.imageLink {
+	display: block;
+	height: 200px;
+	overflow: hidden;
+	margin: 12px 12px 0 12px;
+	border-radius: 4px;
+}
+
+.image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s;
+
+	&:hover {
+		transform: scale(1.05);
+	}
+}
+
+.content {
+	padding: 0 12px 12px 12px;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.title {
+	font-size: 15px;
+	margin: 8px 0;
+	color: rgba(0, 0, 0, 0.85);
+	line-height: 1.4;
+	padding: 0 4px;
+}
+
+.meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 8px 0 12px 0;
+	padding: 0 4px;
+	.price {
+		font-size: 17px;
+		font-weight: 600;
+		color: #1890ff;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+}
+
+.actions {
+	display: flex;
+	gap: 8px;
+	margin-top: auto;
+
+	.cartButton {
+		flex: 1;
+		min-width: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		height: 36px;
+	}
+
+	.wishlistButton {
+		width: 36px !important;
+		min-width: 36px !important;
+		height: 36px;
+		padding: 0;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.ant-icon {
+			margin: 0;
+			font-size: 20px;
+		}
+	}
+}
+
+.quantityControl {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex: 1;
+	height: 36px;
+
+	.ant-btn {
+		flex-shrink: 0;
+		width: 36px;
+		height: 36px;
+		padding: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.quantity {
+		min-width: 24px;
+		text-align: center;
+		font-weight: 500;
+	}
+}

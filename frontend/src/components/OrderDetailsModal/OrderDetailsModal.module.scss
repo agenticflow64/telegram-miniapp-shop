@@ -1,0 +1,68 @@
+// src/components/OrderDetailsModal/OrderDetailsModal.module.scss
+.statusContainer {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+
+.statusTag {
+	margin-right: 8px;
+}
+
+.section {
+	margin-bottom: 24px;
+}
+
+.sectionTitle {
+	margin-bottom: 12px !important;
+}
+
+.listItem {
+	padding: 12px 0 !important;
+}
+
+.itemContent {
+	display: flex;
+	width: 100%;
+	gap: 16px;
+}
+
+.itemImage {
+	flex: 0 0 64px;
+}
+
+.itemInfo {
+	flex: 1;
+	min-width: 0;
+}
+
+.itemMeta {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 8px;
+}
+
+.total {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-top: 1px solid #f0f0f0;
+	padding-top: 16px;
+	margin-top: 16px;
+}
+
+.imagePlaceholder {
+	width: 64px;
+	height: 64px;
+	background: #f5f5f5;
+	border: 1px dashed #d9d9d9;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cancelButton {
+	margin-top: 24px;
+}

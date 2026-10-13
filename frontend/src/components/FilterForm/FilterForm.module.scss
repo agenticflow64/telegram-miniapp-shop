@@ -1,0 +1,58 @@
+.filterForm {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 16px;
+
+	.section {
+		background: #f5f5f5;
+		padding: 16px;
+		border-radius: 8px;
+		border: 1px solid #e8e8e8;
+	}
+
+	.title {
+		margin-bottom: 12px !important;
+		color: #1890ff;
+	}
+
+	.filterGroup {
+		margin-bottom: 12px;
+
+		.filterName {
+			font-weight: 500;
+			margin-bottom: 6px;
+			color: rgba(0, 0, 0, 0.85);
+		}
+	}
+
+	.checkbox {
+		display: block;
+		margin: 4px 0;
+
+		:global(.ant-checkbox-inner) {
+			border-radius: 4px;
+		}
+	}
+
+	.actions {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 24px;
+		gap: 16px;
+
+		button {
+			flex: 1;
+		}
+	}
+}
+.selectDropdown {
+	:global {
+		.ant-select-item-option-content {
+			white-space: normal !important;
+		}
+		.ant-select-dropdown {
+			max-width: 600px;
+		}
+	}
+}

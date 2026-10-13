@@ -1,0 +1,177 @@
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: goods_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-goods_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Elasticsearch
+  elasticsearch:
+    image: elasticsearch:8.17.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-elastic}
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'curl -u elastic:${ELASTIC_PASSWORD:-elastic} -f http://localhost:9200/_cluster/health || exit 1',
+        ]
+      interval: 10s
+      timeout: 30s
+      retries: 10
+
+  # Logstash: синхронизация товаров из PostgreSQL в Elasticsearch
+  logstash:
+    image: logstash:8.17.1
+    container_name: logstash
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      LS_JAVA_OPTS: '-Xmx1g -Xms1g'
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
+      ELASTICSEARCH_USERNAME: 'elastic'
+      ELASTICSEARCH_PASSWORD: '${ELASTIC_PASSWORD:-elastic}'
+      ELASTIC_PASSWORD: '${ELASTIC_PASSWORD:-elastic}'
+      JDBC_USER: '${POSTGRES_USER:-postgres}'
+      JDBC_PASSWORD: '${POSTGRES_PASSWORD:-postgres}'
+    volumes:
+      - ./conf/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./conf/products_template.json:/usr/share/logstash/templates/products_template.json
+      - ./conf/postgresql-42.6.0.jar:/usr/share/logstash/postgresql-42.6.0.jar
+    networks:
+      - app-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-goods_db}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
+      SPRING_ELASTICSEARCH_USERNAME: elastic
+      SPRING_ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-elastic}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_REGION: ${S3_REGION:-ru-1}
+      S3_BUCKET: ${S3_BUCKET:-goods-bucket}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      APP_ADMIN_LOGIN: ${APP_ADMIN_LOGIN:-admin}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-admin}
+      SEED_IMAGES_DIR: ${SEED_IMAGES_DIR:-}
+    ports:
+      - '8080:8080'
+    networks:
+      - app-network
+
+  # Telegram-бот: точка входа в Mini App
+  telegram-bot:
+    build:
+      context: ./tg_bot
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASS: ${POSTGRES_PASSWORD:-postgres}
+      DB_NAME: ${POSTGRES_DB:-goods_db}
+      DB_HOST_DOCKER: postgres
+      WEBAPP_URL: ${WEBAPP_URL:-https://localhost}
+    networks:
+      - app-network
+
+  # Frontend (Telegram Mini App)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:80'
+    restart: always
+    networks:
+      - app-network
+
+  # Admin panel (собрать и запустить отдельно: docker compose up admin-panel)
+  admin-panel:
+    build:
+      context: ./admin_panel
+      dockerfile: Dockerfile
+    profiles:
+      - admin
+    ports:
+      - '3002:80'
+    networks:
+      - app-network
+
+  # Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD-SHELL', 'nc -z localhost 80 || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+  elasticsearch_data:
+
+networks:
+  app-network:
+    driver: bridge

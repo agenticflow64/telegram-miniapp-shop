@@ -1,0 +1,19 @@
+# Секреты
+.env
+*.env
+!.env.example
+
+# Сборка и зависимости
+node_modules/
+dist/
+build/
+
+# Python
+**/__pycache__/
+*.pyc
+.venv/
+
+# Локальные данные
+tg_bot/postgres_data
+images
+*.tar

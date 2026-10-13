@@ -1,0 +1,37 @@
+.reviewItem {
+	padding: 16px 0;
+	border-bottom: 1px solid #f0f0f0;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.rating {
+	font-size: 14px;
+}
+
+.text {
+	white-space: pre-line;
+}
+
+.photos {
+	display: flex;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.photo {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 4px;
+	cursor: pointer;
+}

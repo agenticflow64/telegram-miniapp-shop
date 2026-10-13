@@ -1,0 +1,12 @@
+@import 'base/reset';
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/antd-overrides';
+@import 'components/layout';
+@import 'components/buttons';
+
+@import '~antd/dist/antd.css';
+
+.ant-modal-root {
+	z-index: 1000;
+}

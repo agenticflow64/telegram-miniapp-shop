@@ -1,0 +1,14 @@
+@import '~antd/es/style/themes/default.less';
+
+:root {
+	--primary-color: @primary-color;
+	--border-radius-base: @border-radius-base;
+	--box-shadow-base: @box-shadow-base;
+}
+
+.ant-btn-primary {
+	background: var(--primary-color);
+	&:hover {
+		background: lighten(var(--primary-color), 10%);
+	}
+}

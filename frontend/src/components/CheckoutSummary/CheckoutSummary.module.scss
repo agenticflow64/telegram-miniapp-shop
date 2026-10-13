@@ -1,0 +1,48 @@
+// src/components/CheckoutSummary/CheckoutSummary.module.scss
+.summaryCard {
+	margin-bottom: 24px;
+
+	.title {
+		margin-bottom: 16px !important;
+	}
+}
+
+.itemsList {
+	max-height: 400px;
+	overflow-y: auto;
+	margin-bottom: 16px;
+}
+
+.itemWrapper {
+	margin-bottom: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #f0f0f0;
+
+	&:last-child {
+		border-bottom: none;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+}
+
+.totalSection {
+	border-top: 1px solid #f0f0f0;
+	padding-top: 16px;
+	margin-top: 16px;
+}
+
+.totalRow {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.editLink {
+	display: block;
+	text-align: center;
+	margin-top: 16px;
+}

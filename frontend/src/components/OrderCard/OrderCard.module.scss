@@ -1,0 +1,73 @@
+// src/components/OrderCard/OrderCard.module.scss
+.card {
+	border-radius: 8px;
+	margin-bottom: 16px;
+	cursor: pointer;
+	transition: transform 0.2s;
+
+	&:hover {
+		transform: translateY(-2px);
+	}
+}
+.imageContainer {
+	position: relative;
+	aspect-ratio: 1/1;
+}
+.image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 4px;
+}
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.orderNumber {
+	margin: 0;
+}
+
+.images {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 8px;
+}
+
+.imagePlaceholder {
+	aspect-ratio: 1/1;
+	background: #f5f5f5;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed #d9d9d9;
+}
+
+.footer {
+	display: flex;
+	justify-content: space-between;
+}
+.remainingBadge {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.3);
+	color: rgb(255, 255, 255);
+	border-radius: 4px;
+	font-size: 150%;
+	font-weight: bold;
+	transition: all 0.2s ease;
+	backdrop-filter: blur(5px);
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.1);
+		font-size: 1.4rem;
+		color: rgb(8, 0, 255);
+	}
+}

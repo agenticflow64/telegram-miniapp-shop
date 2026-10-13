@@ -1,0 +1,31 @@
+/* 1. Сброс Ant Design (с 5-й версии) */
+@import 'antd/dist/reset.css';
+
+/* 2. JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+html,
+body,
+#root {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: 'JetBrains Mono', monospace;
+	background: #f5f7fa;
+	color: #1f1f1f;
+}
+
+/* мелкие улучшения */
+a {
+	color: #1677ff;
+}
+
+*::-webkit-scrollbar {
+	width: 8px;
+}
+*::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.25);
+}

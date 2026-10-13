@@ -1,0 +1,30 @@
+// src/components/UserProfileCard/UserProfileCard.module.scss
+.card {
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 24px;
+}
+
+.profileHeader {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.avatar {
+	background-color: #1890ff;
+}
+
+.userInfo {
+	display: flex;
+	flex-direction: column;
+}
+
+.username {
+	margin: 0;
+	font-weight: 500;
+}
+
+.handle {
+	font-size: 14px;
+}

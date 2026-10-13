@@ -1,0 +1,78 @@
+{
+	"index_patterns": ["products*"],
+	"template": {
+		"settings": {
+			"analysis": {
+				"filter": {
+					"ru_stop": { "type": "stop", "stopwords": "_russian_" },
+					"ru_stem": { "type": "stemmer", "language": "russian" },
+					"3_gram": { "type": "ngram", "min_gram": 3, "max_gram": 3 }
+				},
+				"analyzer": {
+					"ru_text": {
+						"type": "custom",
+						"tokenizer": "standard",
+						"filter": ["lowercase", "ru_stop", "ru_stem", "asciifolding"]
+					},
+					"ru_3gram": {
+						"type": "custom",
+						"tokenizer": "standard",
+						"filter": ["lowercase", "3_gram", "asciifolding"]
+					}
+				}
+			}
+		},
+		"mappings": {
+			"dynamic": "strict",
+			"properties": {
+				"id": { "type": "long" },
+				"articleNumber": { "type": "long" },
+				"balanceInStock": { "type": "long" },
+				"categoryId": { "type": "long" },
+				"price": { "type": "long" },
+				"rating": { "type": "long" },
+				"numberOfOrders": { "type": "long" },
+				"totalReviews": { "type": "long" },
+
+				"name": {
+					"type": "text",
+					"analyzer": "ru_text",
+					"search_analyzer": "ru_text",
+					"fields": {
+						"ngr": {
+							"type": "text",
+							"analyzer": "ru_3gram",
+							"search_analyzer": "ru_text"
+						},
+						"keyword": { "type": "keyword", "ignore_above": 256 }
+					}
+				},
+				"description": {
+					"type": "text",
+					"analyzer": "ru_text",
+					"search_analyzer": "ru_text"
+				},
+				"category": {
+					"type": "text",
+					"analyzer": "ru_text",
+					"search_analyzer": "ru_text"
+				},
+
+				"values": {
+					"type": "nested",
+					"properties": {
+						"id": { "type": "long" },
+						"value": {
+							"type": "text",
+							"analyzer": "ru_text",
+							"search_analyzer": "ru_text"
+						}
+					}
+				},
+
+				"photos": { "type": "object", "enabled": false },
+				"reviews": { "type": "object", "enabled": false }
+			}
+		}
+	}
+}

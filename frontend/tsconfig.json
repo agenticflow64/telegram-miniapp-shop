@@ -1,0 +1,22 @@
+{
+	"files": [],
+	"references": [
+		{ "path": "./tsconfig.app.json" },
+		{ "path": "./tsconfig.node.json" }
+	],
+	"compilerOptions": {
+		"paths": {
+			"@styles/*": ["./src/styles/*"]
+		}
+	}
+}
+// "compilerOptions": {
+//     "jsx": "react-jsx",
+//     "lib": ["dom", "dom.iterable", "esnext"],
+//     "paths": {
+//       "@/*": ["./src/*"],
+//       "@styles/*": ["./src/styles/*"]
+//     },
+//     "types": ["@types/react", "@types/react-dom"]
+//   },
+//   "include": ["src"]
